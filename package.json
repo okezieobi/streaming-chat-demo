@@ -1,0 +1,60 @@
+{
+  "name": "streaming-chat-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "NODE_ENV=development DEBUG=streaming-chat-demo:* nodemon src/server.ts",
+    "release": "npm run clean && npm run build-app && npm run start",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build:app",
+    "build:app": "npx tsc",
+    "start": "node dist/server.js",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okezieobi/streaming-chat-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okezieobi/streaming-chat-demo/issues"
+  },
+  "homepage": "https://github.com/okezieobi/streaming-chat-demo#readme",
+  "dependencies": {
+    "cors": "latest",
+    "debug": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "morgan": "latest",
+    "pg-promise": "^10.11.1",
+    "swagger-jsdoc": "latest",
+    "swagger-ui-express": "latest"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/cors": "latest",
+    "@types/debug": "latest",
+    "@types/express": "latest",
+    "@types/morgan": "latest",
+    "@types/node": "latest",
+    "@types/swagger-jsdoc": "latest",
+    "@types/swagger-ui-express": "latest",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.17.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "nodemon": "^2.0.18",
+    "prettier": "^2.6.2",
+    "prettier-config-airbnb": "^1.0.0",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.7.3"
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": "eslint --cache --fix",
+    "**/*.{js,css,md,ts}": "prettier --write"
+  }
+}

@@ -3,11 +3,8 @@ version: '3.4'
 services:
   streamingchatdemo:
     image: streamingchatdemo
+    restart: always
     build:
-      depends_on:
-      # Our app does not work without our database
-      # so this ensures our database is loaded first
-      - postgres
       context: .
       dockerfile: ./Dockerfile
     environment:
@@ -15,6 +12,8 @@ services:
     ports:
       - 5000:5000
       - 9229:9229
+    volumes:
+      - .:/workspace:cache
     command: ["npm", "run", "start:dev"]
   postgres:
     image: postgres:14.1-alpine

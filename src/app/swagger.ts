@@ -15,7 +15,7 @@ server.set("development", {
 const swaggerDefinition = {
   openapi: "3.0.3",
   info: {
-    title: "Simple streaming chat TEST REST API", // Title of the documentation
+    title: "Simple streaming chat REST API", // Title of the documentation
     version: "1.0.0", // Version of the app
     description: "REST API for a stream chat api demo app", // short description of the app
   },

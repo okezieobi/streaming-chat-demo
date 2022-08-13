@@ -1,0 +1,4 @@
+{
+    "mssql.format.alignColumnDefinitionsInColumns": true,
+    "mssql.intelliSense.enableErrorChecking": false
+}

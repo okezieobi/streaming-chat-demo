@@ -1,1 +1,1 @@
-INSERT INTO livestreams(url, "userId", live) VALUES($(url), $(userId), TRUE) RETURNING *;
+INSERT INTO livestreams(url, "userId") VALUES($(url), $(userId)) RETURNING *;

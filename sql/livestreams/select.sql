@@ -1,0 +1,1 @@
+SELECT * FROM livestreams WHERE "userId" = $(userId) OFFSETS $(page) LIMIT $(size);

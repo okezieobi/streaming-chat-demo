@@ -1,0 +1,1 @@
+INSERT INTO tips(from, amount, to) VALUES($(from), $(amount), $(to)) RETURNING *;

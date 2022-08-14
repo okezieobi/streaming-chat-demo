@@ -1,0 +1,1 @@
+SELECT id, (password = crypt($(password), password)) as password FROM users WHERE email = $(email) LIMIT 1;

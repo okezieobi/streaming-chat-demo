@@ -1,0 +1,1 @@
+SELECT id, email, "updatedAt", "createdAt" from users WHERE id = $(id) LIMIT 1;

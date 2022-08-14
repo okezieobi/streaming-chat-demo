@@ -1,0 +1,1 @@
+SELECT * from messages WHERE to = $(email);

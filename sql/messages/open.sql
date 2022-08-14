@@ -1,1 +1,1 @@
-SELECT * from messages WHERE to = NULL;
+SELECT * from messages WHERE "to" = NULL;

@@ -1,5 +1,5 @@
 UPDATE livestream
 SET url = $(url),
     "updatedAt" = DEFAULT
-WHERE from = $(from)
+WHERE "from" = $(from)
 LIMIT 1 RETTURNING *;

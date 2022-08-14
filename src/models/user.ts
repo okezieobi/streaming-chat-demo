@@ -19,9 +19,10 @@ export interface UserInput {
 export type UniqueUser = Pick<BaseType, "id"> & { password: boolean };
 
 const queries = {
-  insert: sql("user/insert"),
-  selectUnique: sql("user/authUnique"),
-  selectByPk: sql("user/selectByPk"),
+  insert: sql("users/insert"),
+  selectUnique: sql("users/auth"),
+  selectByPk: sql("users/selectByPk"),
+  selectByUnique: sql("users/selectByUnique"),
 };
 
 export class UserModel {
@@ -35,7 +36,7 @@ export class UserModel {
   constructor(private db: Database) {
     this.insert = this.insert.bind(this);
     this.authUnique = this.authUnique.bind(this);
-    this.selectByPk = this.selectByPk.bind(this);
+    this.authByPk = this.authByPk.bind(this);
   }
 
   async validate(user: UserInput) {
@@ -64,13 +65,22 @@ export class UserModel {
     return uniqueUser.id;
   }
 
-  async selectByPk(id: string) {
+  async authByPk(id?: string) {
     const authUser = await this.db.client.oneOrNone<AuthUser>(
       queries.selectByPk,
       { id }
     );
     if (authUser == null)
       throw { name: "AuthError", message: "Authentication failed" };
+    return authUser;
+  }
+
+  async selectByUnique(email?: string) {
+    const authUser = await this.db.client.oneOrNone<AuthUser>(
+      queries.selectByUnique,
+      { email }
+    );
+    if (authUser == null) throw { name: "NotFound", message: "No user found" };
     return authUser;
   }
 }

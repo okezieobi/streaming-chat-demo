@@ -1,0 +1,34 @@
+paths:
+  /auth/signup: # path of the user from your endpoint
+    post: # endpoint request type (post request)
+      tags: # Tag property
+        - Auth # Value of the tag
+      summary: signs up a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signup'
+            example:
+              email: 'example@email.io'
+              password: 'password-example'
+      responses: # server responses
+        201:
+          description: Success message in response body.
+        400:
+          description: Error message array in error property of response body
+        409:
+          description: Error message object in error property of response body
+components: # Schema definition for request body
+  schemas:
+    signup:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password

@@ -15,7 +15,7 @@ export class AuthServices {
 
   async auth(arg?: string | string[]) {
     const { id } = await this.jwt.verify(`${arg}`);
-    const authorized = await this.model.selectByPk(id);
+    const authorized = await this.model.authByPk(id);
     return { authorized };
   }
 }

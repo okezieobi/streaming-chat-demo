@@ -1,0 +1,15 @@
+paths:
+  /tips: # path of the user from your endpoint
+    get: # endpoint request type (post request)
+      tags: # Tag property
+        - Tip # Value of the tag
+      summary: fetch tips of an authenticated user
+      security:
+        - headerAuth: []
+      responses: # server responses
+        200:
+          description: An array object containing tip details
+        401:
+          description: Error message object in error property of response body
+        404:
+          description: Error message object in error property of response body

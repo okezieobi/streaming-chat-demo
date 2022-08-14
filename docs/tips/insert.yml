@@ -1,0 +1,36 @@
+paths:
+  /tips: # path of the user from your endpoint
+    post: # endpoint request type (post request)
+      tags: # Tag property
+        - Tip # Value of the tag
+      summary: tip ie send an amount to a regsitered user as an authorized user
+      security:
+        - headerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/insert_tip'
+      responses: # server responses
+        201:
+          description: An object containing a newly created profile details
+        401:
+          description: Error message object in error property of response body
+        400:
+          description: Error message object in error property of response body
+        403:
+          description: Error message object in error property of response body
+components: # Schema definition for request body
+  schemas:
+    insert_tip:
+      type: object
+      properties:
+        to:
+          type: string
+          example: test@email.com
+        amount:
+          type: number
+          example: 20
+      required:
+        - to
+        - amount

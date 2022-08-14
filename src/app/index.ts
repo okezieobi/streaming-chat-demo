@@ -28,10 +28,10 @@ const errHandler = (
   next: NextFunction
 ): void => {
   const codes = new Map();
-  codes.set("InvalidArg", 400);
+  codes.set("ValidationError", 400);
   codes.set("NotFound", 404);
   codes.set("Query", 409);
-  codes.set("AxiosError", 409);
+  codes.set("AuthError", 401);
   res.status(codes.get(err.name));
   if (res.statusCode > 399 || res.statusCode < 500) {
     res.send({ error: err });

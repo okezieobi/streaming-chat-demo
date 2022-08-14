@@ -53,20 +53,39 @@ router.use(async function authenticate(
   next();
 });
 
+async function findUser(
+  { body: { to } }: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const database = new Database();
+  const { selectByUnique } = new UserModel(database);
+  res.locals.user = await selectByUnique(to).catch(next);
+  next();
+}
+
 const tipScope = "tips";
 const tipesRouter = Router();
 tipesRouter
   .route("/")
-  .post(async ({ body }: Request, res: Response, next: NextFunction) => {
-    const database = new Database();
-    const { insert } = new TipModel(database);
-    const data = await insert({
-      ...body,
-      from: res.locals.authorized.email,
-    }).catch(next);
-    res.locals[tipScope] = { message: "Tip successfully sent", data };
-    next();
-  })
+  .post(
+    findUser,
+    async (
+      { body: { amount } }: Request,
+      res: Response,
+      next: NextFunction
+    ) => {
+      const database = new Database();
+      const { insert } = new TipModel(database);
+      const data = await insert({
+        amount,
+        to: res.locals.user.email,
+        from: res.locals.authorized.email,
+      }).catch(next);
+      res.locals[tipScope] = { message: "Tip successfully sent", data };
+      next();
+    }
+  )
   .get(
     async (
       { query: { page, size } }: Request,
@@ -85,3 +104,5 @@ tipesRouter
       next();
     }
   );
+
+router.use(`/${tipScope}`, tipesRouter, dispatchResponse(tipScope));

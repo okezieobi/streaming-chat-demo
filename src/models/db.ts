@@ -3,13 +3,12 @@ import { join as joinPath } from "path";
 import { config } from "dotenv";
 
 config();
-const databaseUrl = new Map();
-databaseUrl.set("development", process.env.DEV_DATABASE_URL ?? "");
-databaseUrl.set("staging", process.env.STAGING_DATABASE_URL ?? "");
-databaseUrl.set("testing", process.env.TESTING_DATABASE_URL ?? "");
 const client = pgPromise()({
-  ssl: { rejectUnauthorized: false },
-  connectionString: databaseUrl.get(process.env.NODE_ENV),
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : false,
+  connectionString: process.env.DATABASE_URL,
 });
 
 export class Database {
@@ -46,13 +45,8 @@ export function sql(file: string) {
 }
 
 if (process.env.NODE_ENV === "development") {
-  const tables = sql("table");
+  const tables = sql("tables");
   client.query(tables).catch(console.error);
-}
-
-if (process.env.NODE_ENV === "staging") {
-  const migrationQuery = sql("migration");
-  client.query(migrationQuery).catch(console.error);
 }
 
 export interface BaseType {

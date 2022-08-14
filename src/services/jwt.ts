@@ -3,7 +3,7 @@ import { config } from "dotenv";
 
 config();
 
-interface Payload {
+interface AuthPayload {
   id: string;
 }
 
@@ -18,6 +18,6 @@ export class Jwt {
   }
 
   async verify(token: string) {
-    return jwt.verify(token, jwtSecret) as Payload;
+    return jwt.verify(token, jwtSecret) as AuthPayload;
   }
 }

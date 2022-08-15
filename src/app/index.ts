@@ -35,7 +35,7 @@ const errHandler = (
   codes.set("JsonWebTokenError", 401);
   res.status(codes.get(err.name));
   if (res.statusCode > 399 || res.statusCode < 500) {
-    res.send({ error: err });
+    res.send({ error: { ...err, message: err.message } });
   } else next(err);
 };
 

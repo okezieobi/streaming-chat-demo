@@ -57,10 +57,9 @@ export class MessageModel {
   }
 
   async update(update: MessageUpdateInput) {
-    const updatedMessage = await this.db.client.oneOrNone<Message>(
-      queries.update,
-      update
-    );
+    const updatedMessage = await this.db.client
+      .oneOrNone<Message>(queries.update, update)
+      .catch(this.db.queryErrHandler);
     if (updatedMessage == null) {
       const error = new Error("No message found to be updated");
       error.name = "NotFound";

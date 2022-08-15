@@ -1,1 +1,1 @@
-SELECT * from messages WHERE "from" = $(email) OR "to" = $(email) OFFSETS $(page) LIMIT $(size);
+SELECT * from messages WHERE "from" = $(email) OR "to" = $(email) OFFSET $(page) LIMIT $(size);

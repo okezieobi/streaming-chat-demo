@@ -1,0 +1,34 @@
+paths:
+  /messages/{id}: # path of the user from your endpoint
+    put: # endpoint request type (post request)
+      tags: # Tag property
+        - Message # Value of the tag
+      summary: update a message to a registered user as an authorized user
+      security:
+        - headerAuth: []
+      parameters:
+        - name : id
+          in: path
+          description: 'id of message belonging to user to update'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update_message'
+      responses: # server responses
+        201:
+          description: An object containing a newly created message details
+        401:
+          description: Error message object in error property of response body
+        400:
+          description: Error message object in error property of response body
+components: # Schema definition for request body
+  schemas:
+    update_message:
+      type: object
+      properties:
+        content:
+          type: string
+          example: test message

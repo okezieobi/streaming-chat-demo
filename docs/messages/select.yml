@@ -1,20 +1,20 @@
 paths:
-  /tips: # path of the user from your endpoint
+  /messages: # path of the user from your endpoint
     get: # endpoint request type (post request)
       tags: # Tag property
-        - Tip # Value of the tag
-      summary: fetch tips of an authenticated user
+        - Message # Value of the tag
+      summary: fetch messages of an authenticated user
       security:
         - headerAuth: []
       parameters:
         - name : page
           in: query
-          description: 'Page number of tips to view'
+          description: 'Page number of message to view'
           schema:
             type: number
         - name : size
           in: query
-          description: 'Page size of tips to view'
+          description: 'Page size of message to view'
           schema:
             type: number
       responses: # server responses

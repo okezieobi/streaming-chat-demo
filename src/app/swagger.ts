@@ -17,10 +17,18 @@ const swaggerDefinition = {
   info: {
     title: "Simple streaming chat REST API", // Title of the documentation
     version: "1.0.0", // Version of the app
-    description: "REST API for a stream chat api demo app", // short description of the app
+    description: "REST API for a streaming chat api demo app", // short description of the app
   },
   servers: [server.get(process.env.NODE_ENV)],
-  components: {},
+  components: {
+    securitySchemes: {
+      headerAuth: {
+        type: "apiKey",
+        in: "header",
+        name: "token",
+      },
+    },
+  },
 };
 
 // options for the swagger docs

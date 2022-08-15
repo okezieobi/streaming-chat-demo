@@ -37,6 +37,7 @@ export class UserModel {
     this.insert = this.insert.bind(this);
     this.authUnique = this.authUnique.bind(this);
     this.authByPk = this.authByPk.bind(this);
+    this.selectByUnique = this.selectByUnique.bind(this);
   }
 
   async validate(user: UserInput) {

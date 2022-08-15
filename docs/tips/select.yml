@@ -6,6 +6,17 @@ paths:
       summary: fetch tips of an authenticated user
       security:
         - headerAuth: []
+      parameters:
+        - name : page
+          in: query
+          description: 'Page number of tips to view'
+          schema:
+            type: number
+        - name : size
+          in: query
+          description: 'Page size of tips to view'
+          schema:
+            type: number
       responses: # server responses
         200:
           description: An array object containing tip details

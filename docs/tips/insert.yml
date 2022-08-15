@@ -30,7 +30,7 @@ components: # Schema definition for request body
           example: test@email.com
         amount:
           type: number
-          example: 20
+          example: $20
       required:
         - to
         - amount

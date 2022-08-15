@@ -3,7 +3,7 @@ import { IsCurrency, IsEmail, validateOrReject } from "class-validator";
 import { Database, BaseType, sql } from "./db";
 
 export interface TipInput {
-  amount?: number;
+  amount?: string;
   from?: string;
   to?: string;
 }
@@ -18,7 +18,7 @@ export type Tip = TipInput & BaseType;
 
 const queries = {
   insert: sql("tips/insert"),
-  select: sql("tips/selecr"),
+  select: sql("tips/select"),
 };
 
 export class TipModel {
@@ -29,7 +29,7 @@ export class TipModel {
   private to?: string;
 
   @IsCurrency()
-  private amount?: number;
+  private amount?: string;
 
   constructor(private db: Database) {
     this.insert = this.insert.bind(this);
@@ -39,6 +39,7 @@ export class TipModel {
   async validate(tip: TipInput) {
     this.amount = tip.amount;
     this.from = tip.from;
+    this.to = tip.to;
     return validateOrReject(this, {
       validationError: { target: false },
     }).catch(this.db.validationErrHandler);

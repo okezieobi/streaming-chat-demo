@@ -3,7 +3,7 @@ import swaggerUI from "swagger-ui-express";
 
 const server = new Map();
 server.set("production", {
-  url: ".herokuapp.com/api/v1",
+  url: "https://streaming-chat.herokuapp.com/api/v1",
   description: "Deployed production ready app app on Heroku",
 });
 

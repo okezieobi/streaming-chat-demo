@@ -1,20 +1,12 @@
 import { IsCurrency, IsEmail, validateOrReject } from "class-validator";
 
-import { Database, BaseType, sql } from "./db";
+import { Database, BaseType, sql, QueryByUser, UserScope } from "./db";
 
-export interface TipInput {
+export interface TipInput extends UserScope {
   amount?: string;
-  from?: string;
-  to?: string;
 }
 
-export interface TipQuery {
-  email?: string;
-  page?: number;
-  size?: number;
-}
-
-export type Tip = TipInput & BaseType;
+export type Tip = Required<TipInput & BaseType>;
 
 const queries = {
   insert: sql("tips/insert"),
@@ -52,7 +44,7 @@ export class TipModel {
       .catch(this.db.queryErrHandler);
   }
 
-  async select(query: TipQuery) {
+  async select(query: QueryByUser) {
     const tips = await this.db.client.manyOrNone<Tip>(queries.select, query);
     if (tips == null) throw { name: "NotFound", message: "No tips found" };
     return tips;

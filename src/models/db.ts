@@ -54,3 +54,14 @@ export interface BaseType {
   readonly createdAt?: string | Date;
   readonly updatedAt?: string | Date;
 }
+
+export interface UserScope {
+  from?: string;
+  to?: string;
+}
+
+export interface QueryByUser {
+  email?: string;
+  page?: number;
+  size?: number;
+}

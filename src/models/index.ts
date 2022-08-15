@@ -1,3 +1,3 @@
 export * from "./user";
 export * from "./db";
-export * from "./tips";
+export * from "./tip";

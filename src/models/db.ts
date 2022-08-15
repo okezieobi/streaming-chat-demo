@@ -44,10 +44,8 @@ export function sql(file: string) {
   return new QueryFile(fullPath, { minify: true });
 }
 
-if (process.env.NODE_ENV === "development") {
-  const tables = sql("tables");
-  client.query(tables).catch(console.error);
-}
+const tables = sql("tables");
+client.query(tables).catch(console.error);
 
 export interface BaseType {
   readonly id?: string;

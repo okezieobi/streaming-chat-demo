@@ -1,6 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import { Database, UserModel, TipModel, QueryByUser } from "../models";
+import {
+  Database,
+  UserModel,
+  TipModel,
+  QueryByUser,
+  MessageModel,
+} from "../models";
 import { AuthServices, Jwt } from "../services";
 
 export const router = Router();
@@ -65,8 +71,8 @@ async function findUser(
 }
 
 const tipScope = "tips";
-const tipesRouter = Router();
-tipesRouter
+const tipsRouter = Router();
+tipsRouter
   .route("/")
   .post(
     findUser,
@@ -94,15 +100,82 @@ tipesRouter
     ) => {
       const database = new Database();
       const { select } = new TipModel(database);
-      const tipeQuery: QueryByUser = {
+      const tipQuery: QueryByUser = {
         page: parseInt(`${page ?? 0}`, 10),
         size: parseInt(`${size ?? 1}`, 10),
         email: res.locals.authorized.email,
       };
-      const data = await select(tipeQuery).catch(next);
+      const data = await select(tipQuery).catch(next);
       res.locals[tipScope] = { message: "Tips successfully retrieved", data };
       next();
     }
   );
 
-router.use(`/${tipScope}`, tipesRouter, dispatchResponse(tipScope));
+router.use(`/${tipScope}`, tipsRouter, dispatchResponse(tipScope));
+
+const messageScope = "messages";
+const messageRouter = Router();
+messageRouter
+  .route("/")
+  .post(
+    findUser,
+    async (
+      { body: { content } }: Request,
+      res: Response,
+      next: NextFunction
+    ) => {
+      const database = new Database();
+      const { insert } = new MessageModel(database);
+      const data = await insert({
+        content,
+        from: res.locals.authorized.email,
+        to: res.locals.user.email,
+      }).catch(next);
+      res.locals[messageScope] = { message: "Message successfully sent", data };
+      next();
+    }
+  )
+  .get(
+    async (
+      { query: { page, size } }: Request,
+      res: Response,
+      next: NextFunction
+    ) => {
+      const database = new Database();
+      const { select } = new MessageModel(database);
+      const messageQuery: QueryByUser = {
+        page: parseInt(`${page ?? 0}`, 10),
+        size: parseInt(`${size ?? 1}`, 10),
+        email: res.locals.authorized.email,
+      };
+      const data = await select(messageQuery).catch(next);
+      res.locals[messageScope] = {
+        message: "Messages successfully retrieved",
+        data,
+      };
+      next();
+    }
+  );
+messageRouter.put(
+  "/:id",
+  async (
+    { body: { content }, params: { id } }: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const database = new Database();
+    const { update } = new MessageModel(database);
+    const data = await update({
+      id,
+      content,
+      from: res.locals.authorized.email,
+    }).catch(next);
+    res.locals[messageScope] = {
+      message: "Message successfully updated",
+      data,
+    };
+    next();
+  }
+);
+
+router.use(`/${messageScope}`, messageRouter, dispatchResponse(messageScope));

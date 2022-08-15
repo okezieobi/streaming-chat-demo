@@ -8,6 +8,12 @@ export interface MessageInput extends UserScope {
 
 export type Message = Required<MessageInput & BaseType>;
 
+interface MessageUpdateInput {
+  content?: string;
+  id?: string;
+  from?: string;
+}
+
 const queries = {
   insert: sql("messages/insert"),
   select: sql("messages/select"),
@@ -24,7 +30,11 @@ export class MessageModel {
 
   private content?: string;
 
-  constructor(private db: Database) {}
+  constructor(private db: Database) {
+    this.insert = this.insert.bind(this);
+    this.select = this.select.bind(this);
+    this.update = this.update.bind(this);
+  }
 
   async validate(message: MessageInput) {
     this.from = message.from;
@@ -46,10 +56,10 @@ export class MessageModel {
     return this.db.client.manyOrNone<Message>(queries.select, query);
   }
 
-  async update(content: string, id: string, from: string) {
+  async update(update: MessageUpdateInput) {
     const updatedMessage = await this.db.client.oneOrNone<Message>(
       queries.update,
-      { content, id, from }
+      update
     );
     if (updatedMessage == null) {
       const error = new Error("No message found to be updated");

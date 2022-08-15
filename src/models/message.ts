@@ -8,7 +8,11 @@ export interface MessageInput extends UserScope {
 
 export type Message = Required<MessageInput & BaseType>;
 
-const queries = {};
+const queries = {
+  insert: sql("messages/insert"),
+  select: sql("messages/select"),
+  update: sql("messages/update"),
+};
 
 export class MessageModel {
   @IsEmail()
@@ -29,5 +33,29 @@ export class MessageModel {
     return validateOrReject(this, {
       validationError: { target: false },
     }).catch(this.db.validationErrHandler);
+  }
+
+  async insert(message: MessageInput) {
+    await this.validate(message);
+    return this.db.client
+      .one<Message>(queries.insert, message)
+      .catch(this.db.queryErrHandler);
+  }
+
+  async select(query: QueryByUser) {
+    return this.db.client.manyOrNone<Message>(queries.select, query);
+  }
+
+  async update(content: string, id: string, from: string) {
+    const updatedMessage = await this.db.client.oneOrNone<Message>(
+      queries.update,
+      { content, id, from }
+    );
+    if (updatedMessage == null) {
+      const error = new Error("No message found to be updated");
+      error.name = "NotFound";
+      throw error;
+    }
+    return updatedMessage;
   }
 }

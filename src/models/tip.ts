@@ -45,8 +45,6 @@ export class TipModel {
   }
 
   async select(query: QueryByUser) {
-    const tips = await this.db.client.manyOrNone<Tip>(queries.select, query);
-    if (tips == null) throw { name: "NotFound", message: "No tips found" };
-    return tips;
+    return this.db.client.manyOrNone<Tip>(queries.select, query);
   }
 }

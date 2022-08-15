@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import { Database, UserModel, TipModel, TipQuery } from "../models";
+import { Database, UserModel, TipModel, QueryByUser } from "../models";
 import { AuthServices, Jwt } from "../services";
 
 export const router = Router();
@@ -94,7 +94,7 @@ tipesRouter
     ) => {
       const database = new Database();
       const { select } = new TipModel(database);
-      const tipeQuery: TipQuery = {
+      const tipeQuery: QueryByUser = {
         page: parseInt(`${page ?? 0}`, 10),
         size: parseInt(`${size ?? 1}`, 10),
         email: res.locals.authorized.email,

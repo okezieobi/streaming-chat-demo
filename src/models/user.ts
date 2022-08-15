@@ -61,8 +61,11 @@ export class UserModel {
       queries.selectUnique,
       user
     );
-    if (uniqueUser == null || !uniqueUser.password)
-      throw { name: "AuthError", message: "Invalid login details" };
+    if (uniqueUser == null || !uniqueUser.password) {
+      const error = new Error("Invalid login details");
+      error.name = "AuthError";
+      throw error;
+    }
     return uniqueUser.id;
   }
 
@@ -71,8 +74,11 @@ export class UserModel {
       queries.selectByPk,
       { id }
     );
-    if (authUser == null)
-      throw { name: "AuthError", message: "Authentication failed" };
+    if (authUser == null) {
+      const error = new Error("Authentication failed");
+      error.name = "AuthError";
+      throw error;
+    }
     return authUser;
   }
 
@@ -81,7 +87,11 @@ export class UserModel {
       queries.selectByUnique,
       { email }
     );
-    if (authUser == null) throw { name: "NotFound", message: "No user found" };
+    if (authUser == null) {
+      const error = new Error("No user found");
+      error.name = "NotFound";
+      throw error;
+    }
     return authUser;
   }
 }
